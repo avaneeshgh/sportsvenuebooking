@@ -51,11 +51,10 @@ export class BookingService {
     }>(url, checkDetails);
   }
 
-  createSession(venueID) {
-    const obj = {};
+  createSession(bookObj) {
     return this.http.post<{ message: string; session: any }>(
-      `/bookings/checkout-session/${venueID}`,
-      {}
+      `/bookings/checkout-session`,
+      bookObj
     );
   }
 }

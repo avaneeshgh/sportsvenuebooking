@@ -84,15 +84,13 @@ export class PaticularComponent implements OnInit {
               status: "active",
             };
 
-            this.bookingservice.bookVenue(bookObj);
+            // this.bookingservice.bookVenue(bookObj);
             //previous code
 
-            this.bookingservice
-              .createSession(this.presentVenueID)
-              .subscribe((res) => {
-                console.log(res);
-                this.stripe.redirectToCheckout({ sessionId: res.session.id });
-              });
+            this.bookingservice.createSession(bookObj).subscribe((res) => {
+              console.log(res);
+              this.stripe.redirectToCheckout({ sessionId: res.session.id });
+            });
           }
         });
     }

@@ -52,8 +52,10 @@ router.post("/checkSlotsAvailable", verifyToken, (req, res, next) => {
 });
 
 //creating session stripe
-router.post("/checkout-session/:venueID", verifyToken, (req, res, next) => {
-  const venueID = new ObjectId(req.params.venueID);
+router.post("/checkout-session", verifyToken, (req, res, next) => {
+  const venueID = new ObjectId(req.body.venueID);
+
+  const bookObj = req.body;
   const userID = req.body.onReloadUserID;
   console.log("user id", userID);
 
@@ -90,6 +92,7 @@ router.post("/checkout-session/:venueID", verifyToken, (req, res, next) => {
                 }`,
                 customer_email: userobj.email,
                 client_reference_id: req.params.venueID,
+                metadata: bookObj,
                 line_items: [
                   {
                     name: venueObj.name,

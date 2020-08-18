@@ -94,39 +94,47 @@ app.use("/owner", ownerApi);
 app.use("/admin", adminApi);
 app.use("/bookings", bookingApi);
 
-app.post("/stripe-webhook", (request, response) => {
-  const sig = request.headers["stripe-signature"];
+app.post(
+  "/stripe-webhook",
+  bodyParser.raw({ type: "application/json" }),
+  (request, response) => {
+    console.log("in webhook", request.body);
 
-  console.log("in webhook", request.body);
+    const metadata = request.body.data.object.metadata;
 
-  let event;
+    console.log("metadata", metadata);
 
-  try {
-    event = stripe.webhooks.constructEvent(
-      request.body,
-      sig,
-      "whsec_HzKcjHrsxF8Ru6TLuGtLC9DvJadHo1Tz"
-    );
+    if (request.body.type == "checkout.session.completed") {
+      const bookObj1 = {
+        userID: metadata.userID,
+        venueID: metadata.venueID,
+        selectedDate: metadata.selectedDate,
+        createdDate: metadata.createdDate,
+        timeSlot: metadata.timeSlot,
+        message: metadata.message,
+        status: metadata.status,
+      };
 
-    console.log("webhook event", event);
-  } catch (err) {
-    return response.status(400).send(`Webhook Error: ${err.message}`);
+      req.app.locals.bookingsCollectionObj.insertOne(
+        bookObj1,
+        (err, result) => {
+          if (err) {
+            console.log("error occured while booking");
+            response.status(401).json({ message: "Booking Failed" });
+          } else {
+            console.log("successfully saved to database shiva ");
+
+            response
+              .status(200)
+              .json({ message: "successfully Booked!", bookingID: result._id });
+          }
+        }
+      );
+    } else {
+      response.status(400).json({ message: "Booking Failed" });
+    }
   }
-
-  // Handle the checkout.session.completed event
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-
-    console.log("event session", session);
-    console.log("webook event received shiva lo9ves keerthi");
-
-    // Fulfill the purchase...
-    //handleCheckoutSession(session);
-  }
-
-  // Return a response to acknowledge receipt of the event
-  response.json({ received: true });
-});
+);
 
 app.use((req, res, next) => {
   // console.log(req.url);
