@@ -86,10 +86,10 @@ router.post("/checkout-session", verifyToken, (req, res, next) => {
             stripe.checkout.sessions.create(
               {
                 payment_method_types: ["card"],
-                success_url: `http://${req.get("host")}/#/successfulbooking/${
+                success_url: `https://${req.get("host")}/#/successfulbooking/${
                   req.body.venueID
                 }`,
-                cancel_url: `http://${req.get("host")}/#/findvenues/${
+                cancel_url: `https://${req.get("host")}/#/findvenues/${
                   req.body.venueID
                 }`,
                 customer_email: userobj.email,
