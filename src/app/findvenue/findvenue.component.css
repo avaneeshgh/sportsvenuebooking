@@ -1,0 +1,17 @@
+mat-form-field {
+  min-width: 100px;
+  max-width: 300px;
+  width: 100%;
+}
+span {
+  width: mx-auto;
+}
+
+.bg {
+  background-image: url(./../../assets/find1.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 800px;
+  object-fit: contain;
+}

@@ -1,0 +1,94 @@
+<div class="content-container">
+  <mat-toolbar color="accent">Please Enter Details</mat-toolbar>
+  <mat-icon id="close-icon" (click)="onCloseDialog()">close</mat-icon>
+</div>
+
+<div class="container-fluid">
+  <form ngForm #bookingForm="ngForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Choose a date</mat-label>
+          <input
+            matInput
+            [min]="dateservice.minDate"
+            [max]="dateservice.maxDate"
+            [matDatepicker]="picker"
+            name="selectedDate"
+            #selectedDate="ngModel"
+            ngModel
+            (dateChange)="addEvent('change', $event)"
+            required
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="firsttimepopup == false && isSlotsAvailableLoading == true"
+        >
+          <i class="pi pi-spin pi-spinner" style="font-size: 4em;"></i>
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="isSlotsAvailableLoading == false && firsttimepopup == false"
+        >
+          <mat-label>Time Slot</mat-label>
+          <mat-select name="timeSlot" ngModel required #timeSlot="ngModel">
+            <mat-option [value]="71" [disabled]="!slotsAvailable?.slot1">
+              7 AM to 10 AM &nbsp;<span *ngIf="!slotsAvailable?.slot1"
+                >Sorry,SLot Already Booked!</span
+              >
+            </mat-option>
+            <mat-option [value]="11" [disabled]="!slotsAvailable?.slot2">
+              10 AM to 1 PM&nbsp;<span *ngIf="!slotsAvailable?.slot2"
+                >Sorry,SLot Already Booked!</span
+              >
+            </mat-option>
+            <mat-option [value]="14" [disabled]="!slotsAvailable?.slot3">
+              1 PM to 4 PM&nbsp;<span *ngIf="!slotsAvailable?.slot3"
+                >Sorry,SLot Already Booked!</span
+              >
+            </mat-option>
+            <mat-option [value]="47" [disabled]="!slotsAvailable?.slot4">
+              4 PM to 7 PM&nbsp;<span *ngIf="!slotsAvailable?.slot4"
+                >Sorry,SLot Already Booked!</span
+              >
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="isSlotsAvailableLoading == false && firsttimepopup == false"
+        >
+          <mat-label>Message</mat-label>
+          <textarea
+            matInput
+            ngModel
+            name="message"
+            #message="ngModel"
+            rows="6"
+          ></textarea>
+        </mat-form-field>
+
+        <div class="button-row">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="bookingForm.invalid"
+            [mat-dialog-close]="bookingForm"
+          >
+            Submit
+          </button>
+          <button mat-raised-button color="warn" [mat-dialog-close]="null">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

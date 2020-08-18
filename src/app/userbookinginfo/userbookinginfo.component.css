@@ -1,0 +1,38 @@
+.container-fluid {
+  margin-top: 15px;
+}
+
+mat-form-field,
+mat-label {
+  font-size: 1.3em;
+}
+
+mat-form-field {
+  margin: 3px 3px 3px 3px;
+}
+
+mat-form-field,
+textarea,
+mat-select {
+  width: 100%;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 5px;
+}
+mat-radio-button,
+mat-label {
+  font-size: 13px;
+}
+.button-row button {
+  margin: 5px;
+}
+
+form {
+  justify-content: center;
+}
+
+i {
+  position: relative;
+  left: 40%;
+}

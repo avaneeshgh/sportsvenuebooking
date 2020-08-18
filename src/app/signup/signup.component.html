@@ -1,0 +1,181 @@
+<body class="bg">
+  <div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div>
+          <div *ngIf="signUpSuccess" class="alert alert-success">
+            <strong>{{ message }}</strong>
+          </div>
+
+          <div
+            *ngIf="loginHasError"
+            class="alert alert-danger alert-dismissible"
+          >
+            <a href="#" class="close" data-dismiss="alert" aria-label="close"
+              >&times;</a
+            >
+            <strong>{{ message }}</strong>
+          </div>
+
+          <form
+            #userForm="ngForm"
+            (ngSubmit)="onSubmit(userForm.value)"
+            class="frm"
+          >
+            <div class="text-center" style="color: black;">
+              <h1>CREATE AN ACCOUNT</h1>
+            </div>
+            <div class="form-group mt-3">
+              <label for="x">ENTER FULLNAME:</label>
+              <!-- apply bs4 class is-invalid when condition satisfies -->
+              <input
+                required
+                class="form-control"
+                [class.is-invalid]="!n.valid && n.touched"
+                [class.is-valid]="n.valid && n.touched"
+                type="text"
+                #n="ngModel"
+                id="x"
+                name="name"
+                ngModel
+              />
+              <small class="text-danger" [class.d-none]="n.valid || n.untouched"
+                >name is required</small
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="x1">ENTER EMAIL:</label>
+              <input
+                required
+                class="form-control"
+                type="email"
+                id="x1"
+                name="email"
+                #n1="ngModel"
+                [class.is-invalid]="n1.touched && !emailState"
+                [class.is-valid]="emailState && n1.touched"
+                (change)="validateEmail(n1.value)"
+                ngModel
+              />
+              <small
+                class="text-danger"
+                *ngIf="n1.errors?.required && n1.touched"
+                >Email is required!</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="!emailState && !n1.errors?.required && n1.touched"
+                >Email is invalid</small
+              >
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+              <label for="x3">PASSWORD:</label>
+              <input
+                required
+                minlength="8"
+                class="form-control"
+                [class.is-invalid]="
+                  n2.touched && (n2.errors?.required || n2.errors?.minlength)
+                "
+                type="password"
+                id="x3"
+                name="password"
+                #n2="ngModel"
+                ngModel
+              />
+              <small
+                class="text-danger"
+                *ngIf="n2.touched && n2.errors?.required"
+                >Password field is required!</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="n2.errors?.minlength && n2.touched"
+                >Password must have atleast 8 chars..!</small
+              >
+            </div>
+
+            <!-- confirm password -->
+            <div class="form-group">
+              <label for="x10">CONFIRM PASSWORD:</label>
+              <input
+                class="form-control"
+                [class.is-invalid]="confirmpassword.touched && !verifyPassword"
+                [class.is-valid]="
+                  confirmpassword.touched &&
+                  verifyPassword &&
+                  !n2.errors?.minlength
+                "
+                type="password"
+                (blur)="validatePassword(n2.value, confirmpassword.value)"
+                id="x10"
+                #confirmpassword="ngModel"
+                name="confirmpassword"
+                ngModel
+              />
+              <small
+                class="text-danger"
+                *ngIf="confirmpassword.touched && !verifyPassword"
+                >Password does not match!</small
+              >
+            </div>
+
+            <!-- MOBILE NUMBER -->
+            <div class="form-group">
+              <label for="x2">ENTER MOBILE-NO:</label>
+              <input
+                class="form-control"
+                type="tel"
+                required
+                #phone="ngModel"
+                [class.is-valid]="
+                  phone.touched &&
+                  !phone.errors?.pattern &&
+                  !phone.errors?.required
+                "
+                [class.is-invalid]="phone.invalid && phone.touched"
+                pattern="^\d{10}$"
+                id="x2"
+                name="phone"
+                ngModel
+              />
+              <!-- <small class="text-danger" [class.d-none]="phone.valid || phone.untouched">phone number is required and must be  be 10 digits</small> -->
+
+              <small
+                class="text-danger"
+                *ngIf="phone.errors?.required && phone.touched"
+                >Phone number is required</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="
+                  phone.errors?.pattern &&
+                  phone.touched &&
+                  !phone.errors?.required
+                "
+                >Phone number must be 10 digits long!</small
+              >
+            </div>
+
+            <!-- button -->
+            <div class="text-center">
+              <button
+                [disabled]="
+                  userForm.form.invalid || !verifyPassword || !emailState
+                "
+                class="btn btn-primary"
+                type="submit"
+              >
+                REGISTER
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

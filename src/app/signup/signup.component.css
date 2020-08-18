@@ -1,0 +1,23 @@
+form {
+  width: mx-auto;
+}
+
+form span {
+  color: yellowgreen;
+  margin-left: 2rem;
+  font-size: 2rem;
+  border-bottom: 4px solid aqua;
+}
+
+.bg {
+  background-image: url(./../../assets/signup.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 750px;
+}
+
+.frm {
+  position: relative;
+  top: 10%;
+}

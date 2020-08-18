@@ -1,0 +1,79 @@
+<body class="bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="jumbotron mt-2">
+          <form #ref="ngForm" (ngSubmit)="onSubmit(ref.value); ref.reset()">
+            <label id="example-radio-group-label"
+              ><strong>Choose Your Role!</strong></label
+            >
+            <mat-radio-group
+              required
+              aria-labelledby="example-radio-group-label"
+              class="example-radio-group"
+              #n1="ngModel"
+              name="role"
+              ngModel
+            >
+              <mat-radio-button
+                class="example-radio-button"
+                *ngFor="let role of roles"
+                [value]="role"
+              >
+                {{ role }}
+              </mat-radio-button>
+            </mat-radio-group>
+
+            <!-- EMAIL -->
+
+            <mat-form-field class="x" appearance="outline">
+              <mat-label>Enter Your Email:</mat-label>
+              <input
+                matInput
+                placeholder="E.g. xyz@gmail.com"
+                name="email"
+                ngModel
+              />
+            </mat-form-field>
+
+            <!-- password -->
+
+            <mat-form-field class="x" appearance="fill">
+              <mat-label>Enter your password</mat-label>
+              <input
+                matInput
+                [type]="hide ? 'password' : 'text'"
+                name="password"
+                ngModel
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <div class="text-center">
+              <button
+                [disabled]="ref.form.invalid || n1.errors?.required"
+                class="btn btn-success"
+              >
+                LOGIN!
+              </button>
+            </div>
+
+            <a (click)="forgotPassword()">Forgot Password?</a>
+            <a [routerLink]="['/users/signup']">Don't have an account?</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

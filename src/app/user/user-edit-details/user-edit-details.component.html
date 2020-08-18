@@ -1,0 +1,87 @@
+<body class="bg">
+  <div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div>
+          <form
+            ngForm
+            #userForm="ngForm"
+            (ngSubmit)="onSubmit(userForm)"
+            class="frm"
+          >
+            <div class="text-center" style="color: black;">
+              <h1>EDIT YOUR DETAILS</h1>
+            </div>
+            <div class="form-group mt-3">
+              <label for="x">ENTER FULLNAME:</label>
+              <!-- apply bs4 class is-invalid when condition satisfies -->
+              <input
+                required
+                class="form-control"
+                [class.is-invalid]="!n.valid && n.touched"
+                [class.is-valid]="n.valid && n.touched"
+                type="text"
+                #n="ngModel"
+                id="x"
+                name="name"
+                [(ngModel)]="presentUserDetails.name"
+              />
+              <small class="text-danger" [class.d-none]="n.valid || n.untouched"
+                >name is required</small
+              >
+            </div>
+
+            <!-- MOBILE NUMBER -->
+            <div class="form-group">
+              <label for="x2">ENTER MOBILE-NO:</label>
+              <input
+                class="form-control"
+                type="tel"
+                required
+                #phone="ngModel"
+                [class.is-valid]="
+                  phone.touched &&
+                  !phone.errors?.pattern &&
+                  !phone.errors?.required
+                "
+                [class.is-invalid]="phone.invalid && phone.touched"
+                pattern="^\d{10}$"
+                id="x2"
+                name="phone"
+                [(ngModel)]="presentUserDetails.phone"
+              />
+              <!-- <small class="text-danger" [class.d-none]="phone.valid || phone.untouched">phone number is required and must be  be 10 digits</small> -->
+
+              <small
+                class="text-danger"
+                *ngIf="phone.errors?.required && phone.touched"
+                >Phone number is required</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="
+                  phone.errors?.pattern &&
+                  phone.touched &&
+                  !phone.errors?.required
+                "
+                >Phone number must be 10 digits long!</small
+              >
+            </div>
+
+            <!-- button -->
+            <div class="text-center">
+              <button
+                [disabled]="userForm.form.invalid"
+                class="btn btn-primary"
+                type="submit"
+              >
+                UPDATE
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

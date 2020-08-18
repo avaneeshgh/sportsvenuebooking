@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+      <form #ref="ngForm" (ngSubmit)="onSubmit(ref.value); ref.reset()">
+
+         <!-- Username of the Owner -->
+          <div class="form-group mt-5">
+            <label for="x1"><strong>ENTER  USERNAME </strong></label>
+            <input required class="form-control" #n="ngModel" type="text" id="x1" name="username" placeholder="username - of - the - owner" ngModel>
+            <small class="text-danger" [class.d-none]="n.valid||n.untouched">Username is required</small>
+          </div>
+         
+          <!-- location of the ground -->
+          <div class="form-group">
+            <label for="y1"><strong>CHOOSE LOCATION:</strong></label>
+            <select class="form-control" (blur)="validateLocation(location.value) " (change)="validateLocation(location.value)" [class.is-invalid]="location.touched && locationHasError" #location="ngModel" id="y1" name="location" ngModel>
+              <option  value="default"  selected >Please Choose the City!</option>
+              <option *ngFor="let location of locations">{{location}}</option>
+            </select>
+            <small class="text-danger" *ngIf="locationHasError && location.touched">Please select one of the Cities</small>
+          </div>
+
+          <!-- select sports type -->
+          <div class="form-group">
+            <label for="y1"><strong>CHOOSE SPORTS TYPE:</strong></label>
+            <select class="form-control"  (blur)="validateSportType(sporttype.value) " (change)="validateSportType(sporttype.value) " [class.is-invalid]="sporttype.touched &&  sportTypeHasError" #sporttype="ngModel" id="y1" name="sporttype" ngModel>
+              <option value="default"  selected>Please Choose The Sports Type:</option>
+              <option *ngFor="let sport of sports">{{sport}}</option>   
+
+            </select>
+            <small class="text-danger" *ngIf="sportTypeHasError && sporttype.touched">Please select one of the sports types</small>
+          </div>
+        
+
+        <!-- Name of the Ground -->
+        <div class="form-group">
+          <label for="x2"><strong>NAME OF THE GROUND:</strong></label>
+          <input required class="form-control" type="text"  id="x2" name="name" #name="ngModel" placeholder="Name - of - the - Ground" ngModel>
+          <small class="text-danger" [class.d-none]="name.valid||name.untouched">Name of the Ground  is required</small>
+        </div>
+
+
+        <!--longitude and latitude of the location-->
+        <div class="form-group">
+          <label for="x15"><strong>LATITUDE OF THE GROUND:</strong></label>
+          <input required class="form-control" type="number" #lat="ngModel" id="x15" name="latitude" placeholder="latitude of the location " ngModel>
+          <small class="text-danger" [class.d-none]="lat.valid||lat.untouched">Latitude of the Ground is required</small>
+        </div> 
+
+        <div class="form-group">
+          <label for="x16"><strong>LONGITUDE OF THE GROUND:</strong></label>
+          <input required class="form-control" type="number"  id="x16"  #lon="ngModel" name="longitude" placeholder="longitude of the location " ngModel>
+          <small class="text-danger" [class.d-none]="lon.valid||lon.untouched">Longitude of the Ground is required</small>
+        </div>
+
+       <!-- image links of the ground -->
+       <div class="form-group">
+         <h5>Links OF THE IMAGES</h5>
+        <input required class="form-control" type="text"   name="image1" placeholder="Link of Image-1" ngModel>
+       </div>
+
+       <div class="form-group">
+        <input required class="form-control" type="text"   name="image2" placeholder="Link of Image-2" ngModel>
+       </div>
+
+       <div class="form-group">
+        <input required class="form-control" type="text"   name="image3" placeholder="Link of Image-3" ngModel>
+       </div>
+
+       <div class="form-group">
+        <input required class="form-control" type="text"   name="image4" placeholder="Link of Image-4" ngModel>
+       </div>
+
+       <div class="form-group">
+        <input required class="form-control" type="text"   name="image5" placeholder="Link of Image-5" ngModel>
+       </div>
+
+
+       
+       
+       
+       
+        <!-- inline amenties -->
+            <div class="mt-4">
+
+              <h5>AMENITIES</h5>
+              <!-- flood light -->
+              
+              <div class="form-check-inline">
+                <label class="form-check-label" for="amenty1">
+                  <input type="checkbox" class="form-check-input" id="amenty1" name="floodlight" value="floodlight" ngModel>FLOOD LIGHTS
+                </label>
+              </div>
+
+              <!-- sanitation -->
+              <div class="form-check-inline">
+                <label class="form-check-label" for="amenty2">
+                  <input type="checkbox" class="form-check-input" id="amenty2" name="sanitation" value="sanitation" ngModel>SANITATION FACALITIES
+                </label>
+              </div>
+
+              <!-- dressing room -->
+
+              <div class="form-check-inline">
+                <label class="form-check-label" for="amenty3">
+                  <input type="checkbox" class="form-check-input" id="amenty3" name="dressingroom" value="dressingroom" ngModel>DRESSING ROOM
+                </label>
+              </div>
+
+                <!-- canteen -->
+
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty4">
+                    <input type="checkbox" class="form-check-input" id="amenty4" name="canteen" value="canteen" ngModel>CANTEEN
+                  </label>
+                </div>
+
+                <!-- umpire -->
+
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty5">
+                    <input type="checkbox" class="form-check-input" id="amenty5" name="umpire" value="umpire" ngModel>UMPIRE
+                  </label>
+                </div>
+              
+            </div>
+        
+
+         <!-- Description about the Ground -->
+         <div class="form-group mt-5">
+          <label for="x5"><strong>Describe something about the Ground:</strong></label>
+          <textarea  required id="x5" rows="4" cols="75" name="description" ngModel></textarea>
+        </div>
+        
+
+       <!-- button -->
+       <div class="text-center">
+        <button type="submit" [disabled]="ref.form.invalid || locationHasError|| sportTypeHasError"class="btn-success p-2 mt-4">ADD VENUE</button>
+       </div>
+      </form>
+ 
+           
+    </div>
+    <div class="col-sm-3"></div>
+
+  </div>
+
+</div>

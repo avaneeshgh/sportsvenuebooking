@@ -1,0 +1,263 @@
+<body class="bg">
+  <div class="container-fluid">
+    <form
+      #ref="ngForm"
+      (ngSubmit)="onSubmit(ref.value)"
+      style="position: relative; top: 10px;"
+    >
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <mat-form-field>
+            <mat-label>Choose the city</mat-label>
+            <mat-select required name="location" #n1="ngModel" ngModel>
+              <mat-option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="n1.errors?.required"
+              >Please choose one of the cities</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 text-center">
+          <mat-form-field>
+            <mat-label>Choose the type of the Sport</mat-label>
+            <mat-select required name="sporttype" #n2="ngModel" ngModel>
+              <mat-option *ngFor="let sport of sports" [value]="sport">
+                {{ sport }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="n2.errors?.required"
+              >Please choose the type of the Sport!</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <div class="text-center">
+            <button
+              [disabled]="ref.form.invalid"
+              mat-raised-button
+              color="accent"
+            >
+              SEARCH
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <h1 *ngIf="!isFetching" class="text-center" style="color: black;">
+    Finding Best venues in {{ urlObj.location }} &nbsp;&nbsp; - &nbsp;{{
+      urlObj.sporttype
+    }}
+  </h1>
+
+  <!-- Adding Spinner -->
+  <div class="text-center">
+    <div *ngIf="isFetching" class="lds-spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="container-fluid" *ngIf="!isFetching">
+    <div class="row">
+      <div class="col-2">
+        <mat-toolbar>Filters</mat-toolbar>
+        <div class="container-fluid">
+          <div class="row">
+            <form
+              #ref1="ngForm"
+              (ngSubmit)="onSubmit1(ref1.value); ref1.reset()"
+            >
+              <div class="col" style="position: relative; margin-top: 12px;">
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty1">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="amenty1"
+                      name="floodlight"
+                      value="floodlight"
+                      ngModel
+                    />FLOOD LIGHTS
+                  </label>
+                </div>
+              </div>
+              <div class="col" style="position: relative; margin-top: 12px;">
+                <!-- sanitation -->
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty2">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="amenty2"
+                      name="sanitation"
+                      value="sanitation"
+                      ngModel
+                    />SANITATION FACALITIES
+                  </label>
+                </div>
+              </div>
+              <div class="col" style="position: relative; margin-top: 12px;">
+                <!-- dressing room -->
+
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty3">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="amenty3"
+                      name="dressingroom"
+                      value="dressingroom"
+                      ngModel
+                    />DRESSING ROOM
+                  </label>
+                </div>
+              </div>
+              <div class="col" style="position: relative; margin-top: 12px;">
+                <!-- canteen -->
+
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty4">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="amenty4"
+                      name="canteen"
+                      value="canteen"
+                      ngModel
+                    />CANTEEN
+                  </label>
+                </div>
+              </div>
+              <div class="col" style="position: relative; margin-top: 12px;">
+                <!-- umpire -->
+
+                <div class="form-check-inline">
+                  <label class="form-check-label" for="amenty5">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="amenty5"
+                      name="umpire"
+                      value="umpire"
+                      ngModel
+                    />UMPIRE
+                  </label>
+                </div>
+              </div>
+
+              <div
+                class="col text-center"
+                style="position: relative; margin-top: 25px;"
+              >
+                <div class="text-center">
+                  <button mat-raised-button color="accent">
+                    Apply
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-10">
+        <div class="row mt-5">
+          <!-- if venue is empty -->
+          <div *ngIf="venues.length == 0" class="text-center">
+            <img
+              class="rounded"
+              src="https://lh3.googleusercontent.com/QarLUX3XWbLirrkDDz7aOFEzNYY23hfMowCQcE6Bsu68xi1f58j_bSoc-0BtPONaC2zqdH4658L6VlASjZhZkb2_vrSEPpVfIa-vsBjfKN6Ydrasqnn_ugs9nnHmZDrwHQC9_u6nXA"
+              alt="image"
+            />
+          </div>
+          <div
+            class="col-md-4 mb-3"
+            *ngFor="let venue of venues | filter: filteredArray:status"
+          >
+            <mat-card>
+              <img
+                mat-card-image
+                [src]="venue.image1"
+                alt="Photo of the Ground"
+              />
+              <mat-card-header>
+                <mat-card-title style="font-size: 15px;">{{
+                  venue.name | uppercase
+                }}</mat-card-title>
+                <mat-card-subtitle>KONDAPUR</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.floodlight"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >FloodLight</i
+                >
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.canteen"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >Canteen</i
+                >
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.umpire"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >Umpire</i
+                >
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.sanitation"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >Sanitation</i
+                >
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.playkit"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >Play Kit</i
+                >
+                <i
+                  style="color: darkcyan;"
+                  *ngIf="venue.dressingroom"
+                  class="fa fa-check-square-o ml-3"
+                  aria-hidden="true"
+                  >Dressing-Room</i
+                >
+                <label>rating:</label>
+              </mat-card-content>
+              <mat-card-actions class="text-center">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="doViewMore(venue)"
+                >
+                  View More
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

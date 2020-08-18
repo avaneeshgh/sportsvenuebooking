@@ -1,0 +1,103 @@
+<div class="container" style="height: 600px;" *ngIf="isLoading">
+  <div class="complete" style="position: relative; top: 40%; left: 40%;">
+    <mat-spinner></mat-spinner>
+    <br />
+    <h2 class="loading" style="font-weight: bold; color: blue;">
+      Loading.....
+    </h2>
+  </div>
+</div>
+
+<div
+  class="container"
+  style="height: 600px;"
+  *ngIf="!isLoading && bookings?.length == 0"
+>
+  <div class="complete" style="position: relative; top: 40%; left: 20%;">
+    <div class="display-3">No Bookings!</div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="!isLoading && bookings?.length > 0">
+  <div class="display-4">Bookings</div>
+
+  <p-table [columns]="cols" [value]="bookings">
+    <ng-template pTemplate="caption">
+      ALL BOOKINGS
+    </ng-template>
+
+    <!-- <ng-template pTemplate="header">
+      <tr>
+        <th style="color: black; font-weight: bold;">
+          USER NAME
+        </th>
+        <th style="color: black; font-weight: bold;">
+          USER EMAIL
+        </th>
+        <th style="color: black; font-weight: bold;">
+          USER PHONE
+        </th>
+        <th style="color: black; font-weight: bold;">
+          VENUE NAME
+        </th>
+        <th style="color: black; font-weight: bold;">
+          LOCATION
+        </th>
+        <th style="color: black; font-weight: bold;">
+          SPORT TYPE
+        </th>
+        <th style="color: black; font-weight: bold;">
+          CREATION
+        </th>
+
+        <th style="color: black; font-weight: bold;">
+          BOOKING
+        </th>
+        <th style="color: black; font-weight: bold;">
+          SLOT
+        </th>
+        <th style="color: black; font-weight: bold;">
+          STATUS
+        </th>
+
+        <th style="color: black; font-weight: bold;">
+          MESSAGE
+        </th>
+      </tr>
+    </ng-template> -->
+    
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          </th>
+      </tr>
+  </ng-template>
+    <!-- <ng-template pTemplate="body" let-details>
+      <tr>
+        <td>{{ details.userName }}</td>
+        <td>{{ details.email }}</td>
+        <td>{{ details.phone }}</td>
+        <td>{{ details.venueName }}</td>
+        <td>{{ details.location }}</td>
+        <td>{{ details.sportType }}</td>
+        <td>{{ details.createdDate }}</td>
+        <td>{{ details.selectedDate }}</td>
+        <td>{{ details.timeSlot }}</td>
+        <td>{{ details.status }}</td>
+
+        <td>{{ details.message }}</td>
+      </tr>
+    </ng-template> -->
+  
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+          <td *ngFor="let col of columns">
+              &#123;&#123;rowData[col.field]&#125;&#125;
+          </td>
+         
+      </tr>
+  </ng-template>
+  </p-table>
+</div>

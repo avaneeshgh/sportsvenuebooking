@@ -1,0 +1,51 @@
+<body class="bg">
+  <div class="container">
+    <div>
+      <div class="display-4 text-center" style="color: white;">
+        Find the Best Sports Venues Near You!
+      </div>
+
+      <form #ref="ngForm" (ngSubmit)="onSubmit(ref.value)">
+        <div class="row">
+          <div class="col-md-6 mt-5">
+            <div class="text-center">
+              <mat-form-field>
+                <mat-label>Choose the city</mat-label>
+                <mat-select required name="city" #n1="ngModel" ngModel>
+                  <mat-option *ngFor="let city of cities" [value]="city">
+                    {{ city }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="">Please choose an animal</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-6 mt-5">
+            <div class="text-center">
+              <mat-form-field>
+                <mat-label>Choose the type of the Sport</mat-label>
+                <mat-select required name="sporttype" #n2="ngModel" ngModel>
+                  <mat-option *ngFor="let sport of sports" [value]="sport">
+                    {{ sport }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="n2.errors?.required"
+                  >Please choose the type of the Sport!</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5">
+          <button
+            [disabled]="ref.form.invalid"
+            mat-raised-button
+            color="accent"
+          >
+            SEARCH
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>

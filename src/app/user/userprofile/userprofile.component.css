@@ -1,0 +1,21 @@
+.activeroute {
+  color: red;
+  background-color: aquamarine;
+}
+.vertical-menu {
+  width: 250px;
+  height: 100%; /* Set a width if you like */
+  background-color: #ccc;
+}
+
+.vertical-menu a {
+  background-color: #ccc; /* Grey background color */
+  color: black; /* Black text color */
+  display: block; /* Make the links appear below each other */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+  background-color: #6495ed; /* Dark grey background on mouse-over */
+}

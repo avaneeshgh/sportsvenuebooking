@@ -1,0 +1,65 @@
+<!-- <div class="container-fluid">
+  <div class="row mt-3">
+    <div class="col-sm-3">
+      <nav class="navbar bg-light">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="details"
+              routerLinkActive="activeroute"
+              >MY DETAILS</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="edit-details"
+              routerLinkActive="activeroute"
+              >EDIT DETAILS</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="password-change"
+              routerLinkActive="activeroute"
+              >UPDATE PASSWORD</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLink="previous-bookings"
+              routerLinkActive="activeroute"
+              >MY BOOKINGS</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="col-sm-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> -->
+
+<div style="height: 100%; width: 100%;">
+  <div class="row" style="height: 100%;">
+    <div class="col-2">
+      <div style="height: 100%;">
+        <div class="vertical-menu">
+          <a routerLink="details">My Details</a>
+          <a routerLink="edit-details">Edit Account</a>
+          <a routerLink="password-change">Change Password</a>
+          <a routerLink="previous-bookings">My Bookings</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-10">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

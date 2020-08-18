@@ -1,0 +1,96 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    [ngClass]="{ hidden: (isHandset$ | async) === false }"
+    fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>
+      <a *ngIf="loggedIn" routerLink="user/Userprofile/details">
+        <mat-icon>account_circle</mat-icon> &nbsp;{{
+          authServiceObj.presentUser.name
+        }}
+      </a>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="./home"><mat-icon>home</mat-icon>Home</a>
+      <a mat-list-item routerLink="./findvenues">Find Venues</a>
+      <a mat-list-item *ngIf="!loggedIn" routerLink="users/login"
+        ><mat-icon>login</mat-icon>Login</a
+      >
+      <a mat-list-item *ngIf="loggedIn" (click)="authServiceObj.logOut()"
+        ><mat-icon>logout</mat-icon>Logout</a
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="accent">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <a routerLink="/">
+        <img
+          [ngClass]="{ hidden1: (isHandset$ | async) === true }"
+          class="logoimg"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ74Ae7M4U2jQJhBpMQWw7LdxklJUxJ0F71kR7zO6EH8FM3Wh1z&s"
+          alt="logo"
+        />
+        <span class="logotext">SPORTZ.COM</span>
+      </a>
+
+      <span *ngIf="loggedIn" style="margin-left: 10px;"
+        ><a routerLink="user/Userprofile/details">
+          <mat-icon>account_circle</mat-icon> WELCOME&nbsp;{{
+            authServiceObj.presentUser.name
+          }}
+        </a></span
+      >
+
+      <span class="spacer"></span>
+
+      <ul [ngClass]="{ hidden: (isHandset$ | async) === true }">
+        <li>
+          <a mat-button routerLink="/home"><mat-icon>home</mat-icon>Home</a>
+        </li>
+        <li>
+          <a mat-button routerLink="/findvenues"
+            ><mat-icon>search</mat-icon>Find Venues</a
+          >
+        </li>
+
+        <li *ngIf="!loggedIn">
+          <a mat-button routerLink="users/login"
+            ><mat-icon>login</mat-icon>Login</a
+          >
+        </li>
+        <li *ngIf="loggedIn">
+          <button mat-button (click)="authServiceObj.logOut()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </li>
+        <li>
+          <a mat-button routerLink="/contactus"
+            ><mat-icon>contacts</mat-icon>Contact</a
+          >
+        </li>
+        <li>
+          <a mat-button routerLink="/aboutus"
+            ><mat-icon>people</mat-icon>About</a
+          >
+        </li>
+      </ul>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

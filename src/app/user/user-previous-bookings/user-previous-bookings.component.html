@@ -1,0 +1,154 @@
+<div class="container" style="height: 600px;" *ngIf="isLoading">
+  <div class="complete" style="position: relative; top: 40%; left: 40%;">
+    <i class="pi pi-spin pi-spinner" style="font-size: 5em;"></i>
+    <br />
+    <h2 class="loading" style="font-weight: bold; color: blue;">
+      Loading.....
+    </h2>
+  </div>
+</div>
+
+<div
+  class="container"
+  style="height: 600px;"
+  *ngIf="allBookings?.length == 0 && !isLoading"
+>
+  <div class="complete" style="position: relative; top: 40%; left: 20%;">
+    <div class="display-3">No Bookings!</div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="!isLoading && allBookings.length > 0">
+  <div class="container">
+    <div class="row">
+      <div
+        class="col text-center"
+        style="margin-top: 15px; margin-bottom: 15px; color: darkgreen;"
+      >
+        <p class="display-4">My Bookings</p>
+      </div>
+    </div>
+
+    <p-table [columns]="cols" [value]="allBookings">
+      <ng-template pTemplate="caption">
+        MY BOOKINGS
+      </ng-template>
+
+      <!-- <ng-template pTemplate="header">
+        <tr>
+          <th style="color: black; font-weight: bold;">
+            CREATION
+          </th>
+          <th style="color: black; font-weight: bold;">
+            BOOKING
+          </th>
+          <th style="color: black; font-weight: bold;">
+            SLOT
+          </th>
+          <th style="color: black; font-weight: bold;">
+            VENUE NAME
+          </th>
+          <th style="color: black; font-weight: bold;">
+            SPORT
+          </th>
+          <th style="color: black; font-weight: bold;">
+            LOCATION
+          </th>
+          <th style="color: black; font-weight: bold;">
+            MESSAGE
+          </th>
+
+          <th style="color: black; font-weight: bold;">
+            OPTIONS
+          </th>
+          <th style="color: black; font-weight: bold;">
+            STATUS
+          </th>
+        </tr>
+      </ng-template> -->
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            </th>
+            <th>OPTIONS</th>
+        </tr>
+    </ng-template>  
+        
+        <ng-template pTemplate="body" let-details>
+        <tr>
+          <td>{{ details.createdDate }}</td>
+          <td>{{ details.selectedDate }}</td>
+          <td>{{ details.timeSlot }}</td>
+          <td>{{ details.venueDetails.name }}</td>
+          <td>{{ details.venueDetails.sporttype }}</td>
+          <td>{{ details.venueDetails.location }}</td>
+          <td>{{ details.message }}</td>
+
+          <td>
+            <div class="p-grid">
+              <div class="p-col">
+                <button
+                  pButton
+                  type="button"
+                  label="View"
+                  class="ui-button-rounded"
+                  (click)="onView(details.venueDetails)"
+                ></button>
+              </div>
+              <div class="p-col">
+                <button
+                  pButton
+                  type="button"
+                  label="Cancel"
+                  (click)="onCancelBooking(details)"
+                  class="ui-button-rounded ui-button-danger"
+                  [disabled]="details.status == 'cancelled'"
+                ></button>
+              </div>
+            </div>
+          </td>
+          <td>{{ details.status }}</td>
+        </tr>
+      </ng-template>  
+      
+       <!-- <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td *ngFor="let col of columns">
+              <div *ngIf=" ((col.field!='name') && (col.field!='sporttype') && (col.field!='location')) ">
+                &#123;&#123;rowData[col.field]&#125;&#125
+             </div>
+             <div *ngIf="((col.field=='name') || (col.field=='sporttype') || (col.field=='location'))">
+              &#123;&#123;rowData.venueDetails[col.field]&#125;&#125;
+           </div>
+
+                
+            </td>
+            <td><div class="p-grid">
+              <div class="p-col">
+                <button
+                  pButton
+                  type="button"
+                  label="View"
+                  class="ui-button-rounded"
+                  (click)="onView(rowData.venueDetails)"
+                ></button>
+              </div>
+              <div class="p-col">
+                <button
+                  pButton
+                  type="button"
+                  label="Cancel"
+                  (click)="onCancelBooking(rowData)"
+                  class="ui-button-rounded ui-button-danger"
+                  [disabled]="rowData.status == 'cancelled'"
+                ></button>
+              </div>
+            </div></td>
+        </tr>
+    </ng-template> -->
+
+    </p-table>
+  </div>
+</div>
