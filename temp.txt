@@ -1,1 +1,5 @@
 This a temp test commit.
+
+git add .
+git commit -m "<Commmit Message>"
+git push origin master

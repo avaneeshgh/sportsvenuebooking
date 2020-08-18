@@ -5,6 +5,11 @@ const path = require("path");
 const mc = require("mongodb").MongoClient;
 var ObjectId = require("mongodb").ObjectId;
 
+//stripe
+const stripe = require("stripe")(
+  "sk_test_51HFkHCBFTKV0ZzilwdLhNrfoyBVVoV0Svwcu9aMENIB1ueih32hSnFdrykJFH9fDfAZY7sa8JNbzso9cvVZda8bl00lxggu7DL"
+);
+
 //connect server.js with sportsvenue app of dist folder
 app.use(exp.static(path.join(__dirname, "./dist/sportsvenue")));
 
@@ -88,6 +93,40 @@ app.use("/findvenues", venueApi);
 app.use("/owner", ownerApi);
 app.use("/admin", adminApi);
 app.use("/bookings", bookingApi);
+
+app.post("/stripe-webhook", (request, response) => {
+  const sig = request.headers["stripe-signature"];
+
+  console.log("in webhook", req.body);
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      request.body,
+      sig,
+      "whsec_HzKcjHrsxF8Ru6TLuGtLC9DvJadHo1Tz"
+    );
+
+    console.log("webhook event", event);
+  } catch (err) {
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the checkout.session.completed event
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+
+    console.log("event session", session);
+    console.log("webook event received shiva lo9ves keerthi");
+
+    // Fulfill the purchase...
+    //handleCheckoutSession(session);
+  }
+
+  // Return a response to acknowledge receipt of the event
+  response.json({ received: true });
+});
 
 app.use((req, res, next) => {
   // console.log(req.url);

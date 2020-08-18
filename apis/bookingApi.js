@@ -117,10 +117,4 @@ router.post("/checkout-session/:venueID", verifyToken, (req, res, next) => {
   });
 });
 
-router.post("/stripe-webhook", (req, res, next) => {
-  console.log("stripe webhook ", req.body);
-
-  res.send(200).json({ message: "success" });
-});
-
 module.exports = router;
