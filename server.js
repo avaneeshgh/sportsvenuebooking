@@ -97,7 +97,7 @@ app.use("/bookings", bookingApi);
 app.post("/stripe-webhook", (request, response) => {
   const sig = request.headers["stripe-signature"];
 
-  console.log("in webhook", req.body);
+  console.log("in webhook", request.body);
 
   let event;
 
