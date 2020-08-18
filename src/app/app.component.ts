@@ -18,6 +18,10 @@ export class AppComponent implements OnInit {
     private http: HttpClient
   ) {}
 
+  onClicked() {
+    this.router.navigate([`/successfulbooking/5e91f83bcf27374aa4f708cb`]);
+  }
+
   ngOnInit() {
     //token checking
 

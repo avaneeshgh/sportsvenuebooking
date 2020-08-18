@@ -50,12 +50,14 @@ import { ConfirmDialogComponent } from "./confirm-dialog/confirm-dialog.componen
 import { ErrorComponent } from "./errors/error/error.component";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { CheckboxModule } from "primeng/checkbox";
+import { ButtonModule } from "primeng/button";
 import { FilterPipe } from "./filter.pipe";
 import { MainNavComponent } from "./main-nav/main-nav.component";
 import { LayoutModule } from "@angular/cdk/layout";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { ErrorInterceptor } from "error.interceptor";
+import { SuccessfulbookingComponent } from "./successfulbooking/successfulbooking.component";
 
 @NgModule({
   declarations: [
@@ -74,6 +76,7 @@ import { ErrorInterceptor } from "error.interceptor";
     ErrorComponent,
     FilterPipe,
     MainNavComponent,
+    SuccessfulbookingComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +107,7 @@ import { ErrorInterceptor } from "error.interceptor";
     MatSidenavModule,
     MatListModule,
     CheckboxModule,
+    ButtonModule,
   ],
   providers: [
     SearchService,

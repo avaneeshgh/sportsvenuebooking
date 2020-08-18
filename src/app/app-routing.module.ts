@@ -1,3 +1,4 @@
+import { SuccessfulbookingComponent } from "./successfulbooking/successfulbooking.component";
 import { AdminViewBookingsComponent } from "./admin/admin-view-bookings/admin-view-bookings.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -30,6 +31,10 @@ const routes: Routes = [
     path: "admin/viewbookings",
     component: AdminViewBookingsComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: "successfulbooking/:venueID",
+    component: SuccessfulbookingComponent,
   },
 ];
 

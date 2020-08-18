@@ -1,0 +1,56 @@
+<body class="bg">
+  <div class="container">
+    <div class="row headrow">
+      <div class="col text-center">
+        Congratulations! Successfully Booked!
+      </div>
+    </div>
+
+    <div class="row linerow">
+      <div class="col text-center">
+        Your Booking has been successful. Please check your email for further
+        details.
+      </div>
+    </div>
+
+    <div class="row btnrow">
+      <div class="col-6 text-center">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="View Venue Details"
+          class="p-button-raised"
+          (click)="onViewVenue()"
+          styleClass="p-button-lg"
+        ></button>
+      </div>
+
+      <div class="col-6 text-center">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="View My Bookings"
+          class="p-button-raised p-button-success"
+          (click)="onViewPreviousBookings()"
+          styleClass="p-button-lg"
+        ></button>
+      </div>
+    </div>
+
+    <div class="homerow row">
+      <div class="col text-center">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="Go to Home"
+          class="p-button-rounded p-button-info"
+          (click)="onHome()"
+          styleClass="p-button-lg"
+        ></button>
+      </div>
+    </div>
+  </div>
+</body>
