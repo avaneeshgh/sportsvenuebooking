@@ -4,6 +4,7 @@ const app = exp(); // express obj
 const path = require("path");
 const mc = require("mongodb").MongoClient;
 var ObjectId = require("mongodb").ObjectId;
+var bc;
 
 //stripe
 const stripe = require("stripe")(
@@ -52,7 +53,7 @@ mc.connect(
       app.locals.usersCollectionObj = dbo.collection("usercollection");
       app.locals.venuesCollectionObj = dbo.collection("venuecollection");
       app.locals.bookingsCollectionObj = dbo.collection("bookingcollection");
-
+      bc = dbo.collection("bookingcollection");
       app.listen(process.env.PORT || 3000, (err) => {
         if (err) {
           console.log("Error ");
@@ -104,35 +105,30 @@ app.post(
 
     console.log("metadata", metadata);
 
-    if (request.body.type == "checkout.session.completed") {
-      const bookObj1 = {
-        userID: metadata.userID,
-        venueID: metadata.venueID,
-        selectedDate: metadata.selectedDate,
-        createdDate: metadata.createdDate,
-        timeSlot: metadata.timeSlot,
-        message: metadata.message,
-        status: metadata.status,
-      };
+    const bookObj1 = {
+      userID: metadata.userID,
+      venueID: metadata.venueID,
+      selectedDate: metadata.selectedDate,
+      createdDate: metadata.createdDate,
+      timeSlot: metadata.timeSlot,
+      message: metadata.message,
+      status: metadata.status,
+    };
 
-      req.app.locals.bookingsCollectionObj.insertOne(
-        bookObj1,
-        (err, result) => {
-          if (err) {
-            console.log("error occured while booking");
-            response.status(401).json({ message: "Booking Failed" });
-          } else {
-            console.log("successfully saved to database shiva ");
+    console.log("book obj", bookObj1);
 
-            response
-              .status(200)
-              .json({ message: "successfully Booked!", bookingID: result._id });
-          }
-        }
-      );
-    } else {
-      response.status(400).json({ message: "Booking Failed" });
-    }
+    bc.insertOne(bookObj1, (err, result) => {
+      if (err) {
+        console.log("error occured while booking");
+        response.status(401).json({ message: "Booking Failed" });
+      } else {
+        console.log("successfully saved to database shiva ");
+
+        response
+          .status(200)
+          .json({ message: "successfully Booked!", bookingID: result._id });
+      }
+    });
   }
 );
 
