@@ -1,47 +1,43 @@
-//middleware to check valid token on the backend
-
-// function verifyToken(req,res,next){
-//   //console.log("verify token working")
-//   if(!req.headers.authorization)
-//   {
-//       return res.status(401).send('Unauthorized request')
-//   }
-//   let token = req.headers.authorization.split(' ')[1];
-//   if(token == 'null')
-//   {
-//       return res.status(401).send('Unauthorized request')
-//   }
-//   let payload = jwt.verify(token , 'secretKey')
-//   if(!payload)
-//   {
-//       return res.status(401).send('Unauthorized request')
-//   }
-//   req.userId = payload.subject;
-//   uname = payload.subject;
-//   //console.log("payload :",payload.subject)
-//   next()
-// }
-
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    let token = req.headers.authorization.split(" ")[1];
 
-    // if (token == "null") {
-    //   return res.status(401).send("Unauthorized request");
-    // }
+    tokenparts = token.split(".");
 
-    const payload = jwt.verify(token, "secretkey");
+    let part1 = tokenparts[0];
+    let part3 = tokenparts[2];
+    let part2 = tokenparts[1].substring(41);
+
+    const origToken = part1 + "." + part2 + "." + part3;
+
+    const payload = jwt.verify(origToken, "shivaloveskeerthiandjahnavi");
 
     if (!payload) {
       return res.status(401).send("Unauthorized request");
     }
 
-    req.body.onReloadUserID = payload.user_id;
+    //verification logic
+    req.app.locals.usersCollectionObj.findOne(
+      { email: payload.user_email, password: payload.user_password },
+      (emailerr, result) => {
+        if (emailerr) {
+          return res.status(401).json({
+            message: "Authentication Failed.Please Login!",
+          });
+        }
+        if (result == null || result == undefined) {
+          return res.status(401).json({
+            message: "Authentication Failed.Please Login!",
+          });
+        }
 
-    console.log("token successfully verified!");
-    next();
+        req.body.onReloadUserID = payload.user_id;
+
+        next();
+      }
+    );
   } catch (err) {
     res.status(401).json({ message: "Authentication of admin failed" });
   }

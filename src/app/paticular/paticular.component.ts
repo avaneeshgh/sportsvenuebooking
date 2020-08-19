@@ -18,11 +18,6 @@ export class PaticularComponent implements OnInit {
   );
   isLoading: boolean;
 
-  //two ways
-  //from display coomponent
-  // from mybookingscomponent
-  //adminviewbookingscomponent
-
   constructor(
     private serviceObj: SearchService,
     private route: ActivatedRoute,
@@ -39,11 +34,11 @@ export class PaticularComponent implements OnInit {
 
   date;
   doBooking(venue) {
-    // check if logged in if not snack bar -> please log in
-
     let isLoggedIn = this.authservice.loggedIn;
+
     if (!isLoggedIn) {
       this.notificationservice.success("Please Login to continue!");
+      this.authservice.logOut();
       this.router.navigate(["/users/login"]);
     } else {
       this.dateservice.getDateDetails();
@@ -83,9 +78,6 @@ export class PaticularComponent implements OnInit {
               message: result.value.message,
               status: "active",
             };
-
-            // this.bookingservice.bookVenue(bookObj);
-            //previous code
 
             this.bookingservice.createSession(bookObj).subscribe((res) => {
               console.log(res);

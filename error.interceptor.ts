@@ -1,3 +1,5 @@
+import { AuthService } from "./src/app/auth.service";
+import { Router } from "@angular/router";
 import { ErrorComponent } from "./src/app/errors/error/error.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import {
@@ -12,24 +14,33 @@ import { throwError } from "rxjs";
 import { Injectable } from "@angular/core";
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private authservice: AuthService
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = "An Unknown Error Occured!";
 
-        console.log("shiva loves keerthi");
-
         if (error.error.message) {
           errorMessage = error.error.message;
         }
 
-        this.dialog.open(ErrorComponent, {
-          data: { message: errorMessage },
-          width: "300px",
-          disableClose: false,
-        });
+        this.dialog
+          .open(ErrorComponent, {
+            data: { message: errorMessage },
+            width: "300px",
+            disableClose: false,
+          })
+          .afterClosed()
+          .subscribe(() => {
+            this.authservice.loggedInSubject.next(false);
+            this.authservice.logOut();
+            this.router.navigateByUrl("/users/login");
+          });
         return throwError(error);
       })
     );

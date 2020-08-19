@@ -23,7 +23,6 @@ router.post("/checkSlotsAvailable", verifyToken, (req, res, next) => {
         return res.status(401).json({ message: "some error occured" });
       }
 
-      console.log("stage 2", bookingsonthatday);
       let slotsAvailable = {
         slot1: true,
         slot2: true,
@@ -57,7 +56,6 @@ router.post("/checkout-session", verifyToken, (req, res, next) => {
 
   const bookObj = req.body;
   const userID = req.body.onReloadUserID;
-  console.log("user id", userID);
 
   var venueCollectionObj = req.app.locals.venuesCollectionObj;
   var usercollectionObj = req.app.locals.usersCollectionObj;

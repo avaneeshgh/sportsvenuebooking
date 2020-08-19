@@ -56,7 +56,6 @@ mc.connect(
       bc = dbo.collection("bookingcollection");
       app.listen(process.env.PORT || 3000, (err) => {
         if (err) {
-          console.log("Error ");
           const error = new Error(
             "Error while assigning a port number , please try again later"
           );
@@ -73,8 +72,6 @@ mc.connect(
 );
 
 app.post("/onReload", verifyToken, (req, res, next) => {
-  console.log("onreload" + req.body);
-
   const userID = req.body.onReloadUserID;
 
   var usercollectionObj = req.app.locals.usersCollectionObj;
@@ -99,11 +96,7 @@ app.post(
   "/stripe-webhook",
   bodyParser.raw({ type: "application/json" }),
   (request, response) => {
-    console.log("in webhook", request.body);
-
     const metadata = request.body.data.object.metadata;
-
-    console.log("metadata", metadata);
 
     const bookObj1 = {
       userID: metadata.userID,
@@ -114,8 +107,6 @@ app.post(
       message: metadata.message,
       status: metadata.status,
     };
-
-    console.log("book obj", bookObj1);
 
     bc.insertOne(bookObj1, (err, result) => {
       if (err) {
@@ -133,7 +124,6 @@ app.post(
 );
 
 app.use((req, res, next) => {
-  // console.log(req.url);
   const error = new Error("Not found");
   error.status = 404;
   next(error);
@@ -150,6 +140,5 @@ app.use((error, req, res, next) => {
 });
 
 app.get("*", (req, res, next) => {
-  console.log("shiva loves keerthi and jahnavi");
   res.sendFile(path.join(__dirname, "./dist/sportsvenue/index.html"));
 });

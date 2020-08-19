@@ -43,16 +43,13 @@ router.post("/signup", (req, res) => {
               console.log("error during hasing a passsword", err);
             } else {
               req.body.password = hash;
-              //console.log(hash); //$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K
-              //adding two more fileds
+
               req.body.passwordExpiresIn = "";
               req.body.passwordResetToken = "";
               usercollectionObj.insertOne(req.body, (err, result) => {
                 if (err) {
                   console.log("Error occured while inseerting document", err);
                 } else {
-                  //console.log(result);
-                  //console.log("Succesfully inserted");
                   let transportObj = {
                     email: req.body.email,
                     message:
@@ -61,9 +58,6 @@ router.post("/signup", (req, res) => {
                     name: req.body.name,
                   };
                   sendEmail(transportObj, (info) => {
-                    console.log(
-                      `The mail has beed sent 😃 and the id is ${info.messageId}`
-                    );
                     res.send({ message: "Successfully Registered" });
                   });
                 }
@@ -84,47 +78,47 @@ router.post("/login", (req, res, next) => {
       return res
         .status(401)
         .json({ message: "Invalid Authentication Credentials!" });
-
-      console.log("error occured while login", err);
-      const error = new Error(
-        "Some error occured during login, please try again after sometime"
-      );
-      error.status = 404;
-      next(error);
     } else {
       if (userObj === null) {
         return res
           .status(401)
           .json({ message: "Invalid Authentication Credentials!" });
-
-        res.send({ message: "Email not exist" });
       } else {
         bcrypt.compare(req.body.password, userObj.password, (err, result) => {
           if (err) {
             return res
               .status(401)
               .json({ message: "Invalid Authentication Credentials!" });
-
-            console.log("error occured while hashing", err);
-            const error = new Error(
-              "Some error occured during login, please try again after sometime"
-            );
-            error.status = 404;
           } else {
             if (result) {
-              const token = jwt.sign({ user_id: userObj._id }, "secretkey");
-              console.log("success");
+              let token = jwt.sign(
+                {
+                  user_id: userObj._id,
+                  user_email: userObj.email,
+                  user_password: userObj.password,
+                },
+                "shivaloveskeerthiandjahnavi"
+              );
+
+              //modifytoken
+              let tokenparts = token.split(".");
+              let modiftoken =
+                tokenparts[0] +
+                "." +
+                "brA4BeyQRlsTv0f24peeyJ7Gb9PnPSeysx6Z95OqO" +
+                tokenparts[1] +
+                "." +
+                tokenparts[2];
+
               res.send({
                 message: "success",
-                signedToken: token,
+                signedToken: modiftoken,
                 userObj: userObj,
               });
             } else {
               return res
                 .status(401)
                 .json({ message: "Invalid Authentication Credentials!" });
-
-              res.send({ message: "Invalid credentials!" });
             }
           }
         });
@@ -137,14 +131,11 @@ router.post("/login", (req, res, next) => {
 router.post("/bookslot", verifyToken, (req, res, next) => {
   const bookObj = req.body;
 
-  console.log(bookObj);
-
   req.app.locals.bookingsCollectionObj.insertOne(bookObj, (err, result) => {
     if (err) {
       console.log("error occured while booking");
       res.status(401).json({ message: "Booking Failed" });
     } else {
-      //console.log(result);
       res
         .status(200)
         .json({ message: "successfully Booked!", bookingID: result._id });
@@ -222,7 +213,6 @@ router.get("/getAllBookings/:userID", verifyToken, (req, res, next) => {
             i.venueDetails = venueresult;
             c++;
             if (c == arrayofbookings.length) {
-              //console.log(arrayofbookings);
               console.log("stage 3");
               res
                 .status(200)
@@ -272,8 +262,6 @@ router.post("/sendEmail", (req, res) => {
       if (userObj === null) {
         res.send({ message: "Email does not exist!" });
       } else {
-        // console.log("stage 1");
-
         var user = userObj;
         let otp = ""; //generating random password
         for (i = 1; i <= 8; i++) {
@@ -305,14 +293,9 @@ router.post("/sendEmail", (req, res) => {
                       );
                       res.send("Some error Occured ,plz try again later");
                     } else {
-                      //console.log(result);
-                      console.log("Succesfully updated password");
                       user.subject = "Reset your Sportsvenue password";
                       user.message = `Someone (hopefully you) has requested a password reset for your Sportsvenue account.So your temporary password is ${otp}`;
                       sendEmail(user, (info) => {
-                        console.log(
-                          `The mail has beed sent 😃 and the id is ${info.messageId}`
-                        );
                         res.status(200).json({ message: "success", obj: info });
                       });
                     }
@@ -411,8 +394,6 @@ router.put("/changepassword", verifyToken, (req, res, next) => {
                                     .status(401)
                                     .json({ message: "some error occured" });
                                 } else {
-                                  //console.log(result);
-                                  console.log("Succesfully updated password");
                                   res.status(200).json({ message: "success" });
                                 }
                               }

@@ -27,8 +27,9 @@ export class AppComponent implements OnInit {
 
     const localToken = localStorage.getItem("Token");
 
-    if (!localToken) {
+    if (localToken == null || localToken == undefined) {
       this.authservice.loggedIn = false;
+      this.authservice.logOut();
       this.router.navigate(["/home"]);
 
       //inform
