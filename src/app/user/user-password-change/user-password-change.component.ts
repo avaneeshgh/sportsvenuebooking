@@ -30,7 +30,10 @@ export class UserPasswordChangeComponent implements OnInit {
     this.userservice.changePassword(userObj).subscribe((res) => {
       console.log(res);
 
-      this.notifservice.success("Password change successful!");
+      this.notifservice.success(
+        "Password change successful! Please Relogin to continue"
+      );
+      this.authservice.clearCacheAndRedirect();
     });
   }
   ngOnInit(): void {

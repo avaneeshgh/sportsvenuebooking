@@ -47,25 +47,33 @@ export class UserPreviousBookingsComponent implements OnInit {
     if (this.authservice.presentUser != undefined) {
       this.presentUserID = this.authservice.presentUser._id;
 
-      this.userservice
-        .getPreviousBookings(this.presentUserID)
-        .subscribe((result) => {
+      this.userservice.getPreviousBookings(this.presentUserID).subscribe(
+        (result) => {
           this.isLoading = false;
 
           this.allBookings = result.userBookings;
-        });
+        },
+        (err) => {
+          this.authservice.clearCacheAndRedirect();
+          this.router.navigateByUrl("/users/login");
+        }
+      );
     }
 
     this.authservice.getuserDetailsSubjectListener().subscribe((res) => {
       this.presentUserID = res.presentUser._id;
-      this.userservice
-        .getPreviousBookings(this.presentUserID)
-        .subscribe((result) => {
+      this.userservice.getPreviousBookings(this.presentUserID).subscribe(
+        (result) => {
           this.isLoading = false;
 
           this.allBookings = result.userBookings;
           console.log(this.allBookings);
-        });
+        },
+        (err) => {
+          this.authservice.clearCacheAndRedirect();
+          this.router.navigateByUrl("/users/login");
+        }
+      );
     });
   }
 

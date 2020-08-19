@@ -61,16 +61,21 @@ export class AuthService {
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          localStorage.removeItem("Token");
-          this.loggedIn = false;
-
-          this.loggedInSubject.next(false);
-
+          this.clearCacheAndRedirect();
           this.notificationservice.success(
             "Thank You for visitinng our website!"
           );
-          this.router.navigateByUrl("home");
         }
       });
+  }
+
+  clearCacheAndRedirect() {
+    localStorage.removeItem("Token");
+    this.loggedIn = false;
+    this.token = null;
+
+    this.loggedInSubject.next(false);
+
+    this.router.navigateByUrl("/home");
   }
 }

@@ -29,18 +29,17 @@ export class ErrorInterceptor implements HttpInterceptor {
           errorMessage = error.error.message;
         }
 
-        this.dialog
-          .open(ErrorComponent, {
-            data: { message: errorMessage },
-            width: "300px",
-            disableClose: false,
-          })
-          .afterClosed()
-          .subscribe(() => {
-            this.authservice.loggedInSubject.next(false);
-            this.authservice.logOut();
-            this.router.navigateByUrl("/users/login");
-          });
+        this.dialog.open(ErrorComponent, {
+          data: { message: errorMessage },
+          width: "300px",
+          disableClose: false,
+        });
+        // .afterClosed()
+        // .subscribe(() => {
+        //   this.authservice.loggedInSubject.next(false);
+        //   this.authservice.clearCacheAndRedirect();
+        //   this.router.navigateByUrl("/users/login");
+        // });
         return throwError(error);
       })
     );

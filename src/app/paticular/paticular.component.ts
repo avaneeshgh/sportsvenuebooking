@@ -38,7 +38,7 @@ export class PaticularComponent implements OnInit {
 
     if (!isLoggedIn) {
       this.notificationservice.success("Please Login to continue!");
-      this.authservice.logOut();
+      this.authservice.clearCacheAndRedirect();
       this.router.navigate(["/users/login"]);
     } else {
       this.dateservice.getDateDetails();

@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
     if (localToken == null || localToken == undefined) {
       this.authservice.loggedIn = false;
-      this.authservice.logOut();
+      this.authservice.clearCacheAndRedirect();
       this.router.navigate(["/home"]);
 
       //inform
@@ -47,9 +47,6 @@ export class AppComponent implements OnInit {
             this.authservice.presentUser = res.userDetails;
             this.authservice.loggedIn = true;
 
-            //notification to the app;
-            console.log("notification sent from app.comp.ts");
-
             this.authservice.userDetailsSubject.next({
               presentUser: res.userDetails,
             });
@@ -57,18 +54,12 @@ export class AppComponent implements OnInit {
             this.authservice.loggedInSubject.next(true);
           },
           (err) => {
+            this.authservice.loggedInSubject.next(false);
             this.notificationservice.success("Please Login to Continue");
             this.authservice.loggedIn = false;
             this.router.navigate(["/users/login"]);
-
-            //inform
-            this.authservice.loggedInSubject.next(false);
           }
         );
     }
   }
 }
-
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWM2MTcxNGZjOTNjNzBiYzBmODk0ZGUiLCJpYXQiOjE1OTc0MTQ0NTJ9.RvCDbcY9Kglg6eNOs5USnNzy-BNf5ROOXI1b8iGR7Cw
-
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZWM2MTcxNGZjOTNjNzBiYzBmODk0ZGUiLCJpYXQiOjE1OTc0MTQ1MTd9.9e0JDwdupwxH9jTmnf8H5Umt1HEG5KZTs_ME-AZvqhs
